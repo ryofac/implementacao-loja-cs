@@ -12,7 +12,7 @@ namespace ryanAps.Models
         public int VendedorId { get; set; }
         public virtual Vendedor? Vendedor { get; set; }
 
-        public int TransportadoraId { get; set; }
+        public int? TransportadoraId { get; set; }
         public virtual Transportadora? Transportadora { get; set; }
 
 
