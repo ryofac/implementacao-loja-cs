@@ -1,3 +1,5 @@
+using System.Collections;
+
 namespace ryanAps.Models
 {
     public class Item
@@ -7,8 +9,6 @@ namespace ryanAps.Models
         public int Percentual {get; set;}
         public int Quantidade { get; set; }
         public virtual ICollection<Produto>? Produtos { get; set; }
-        public int NotaDeVendaID { get; set; }
-        public virtual NotaDeVenda? NotaDeVenda { get; set; }
-
+        public virtual ICollection<NotaDeVenda>? NotasDeVenda { get; set; }
     }
 }

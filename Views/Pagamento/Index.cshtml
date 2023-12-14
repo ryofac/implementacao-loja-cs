@@ -1,4 +1,4 @@
-@model IEnumerable<ryanAps.Models.Item>
+@model IEnumerable<ryanAps.Models.Pagamento>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,13 +13,16 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Preco)
+                @Html.DisplayNameFor(model => model.DataLimite)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Percentual)
+                @Html.DisplayNameFor(model => model.Valor)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Quantidade)
+                @Html.DisplayNameFor(model => model.Pago)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NotaDeVenda)
             </th>
             <th></th>
         </tr>
@@ -28,13 +31,16 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Preco)
+                @Html.DisplayFor(modelItem => item.DataLimite)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Percentual)
+                @Html.DisplayFor(modelItem => item.Valor)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Quantidade)
+                @Html.DisplayFor(modelItem => item.Pago)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NotaDeVenda.Id)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

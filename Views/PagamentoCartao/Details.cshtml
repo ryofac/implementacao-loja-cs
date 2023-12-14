@@ -1,4 +1,4 @@
-@model ryanAps.Models.TipoPagamento
+@model ryanAps.Models.PagamentoCartao
 
 @{
     ViewData["Title"] = "Details";
@@ -7,9 +7,21 @@
 <h1>Details</h1>
 
 <div>
-    <h4>TipoPagamento</h4>
+    <h4>PagamentoCartao</h4>
     <hr />
     <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.NumeroDoCartao)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NumeroDoCartao)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Bandeira)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Bandeira)
+        </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.NomeDoCobrado)
         </dt>

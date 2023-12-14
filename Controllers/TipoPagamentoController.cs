@@ -54,7 +54,7 @@ namespace ryanAps.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,DataLimite,Valor,Pago")] TipoPagamento tipoPagamento)
+        public async Task<IActionResult> Create([Bind("Id,NomeDoCobrado,InformacoesAdcionais")] TipoPagamento tipoPagamento)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +86,7 @@ namespace ryanAps.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,DataLimite,Valor,Pago")] TipoPagamento tipoPagamento)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,NomeDoCobrado,InformacoesAdcionais")] TipoPagamento tipoPagamento)
         {
             if (id != tipoPagamento.Id)
             {

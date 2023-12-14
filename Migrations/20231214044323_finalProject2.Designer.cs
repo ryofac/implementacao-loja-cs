@@ -11,8 +11,8 @@ using ryanAps.Models;
 namespace ryanAps.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20231214032116_TransportadoraOpcional")]
-    partial class TransportadoraOpcional
+    [Migration("20231214044323_finalProject2")]
+    partial class finalProject2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -41,9 +41,6 @@ namespace ryanAps.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("NotaDeVendaID")
-                        .HasColumnType("int");
-
                     b.Property<int>("Percentual")
                         .HasColumnType("int");
 
@@ -54,8 +51,6 @@ namespace ryanAps.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("NotaDeVendaID");
 
                     b.ToTable("Item");
                 });
@@ -89,10 +84,13 @@ namespace ryanAps.Migrations
                     b.Property<DateTime?>("Data")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<int>("ItemId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("Tipo")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<int?>("TipoPagamentoId")
+                    b.Property<int>("TipoPagamentoId")
                         .HasColumnType("int");
 
                     b.Property<int?>("TransportadoraId")
@@ -105,6 +103,8 @@ namespace ryanAps.Migrations
 
                     b.HasIndex("ClienteId");
 
+                    b.HasIndex("ItemId");
+
                     b.HasIndex("TipoPagamentoId");
 
                     b.HasIndex("TransportadoraId");
@@ -112,6 +112,31 @@ namespace ryanAps.Migrations
                     b.HasIndex("VendedorId");
 
                     b.ToTable("NotaDeVenda");
+                });
+
+            modelBuilder.Entity("ryanAps.Models.Pagamento", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DataLimite")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("NotaDeVendaId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Pago")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<double>("Valor")
+                        .HasColumnType("double");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NotaDeVendaId");
+
+                    b.ToTable("Pagamento");
                 });
 
             modelBuilder.Entity("ryanAps.Models.Produto", b =>
@@ -150,18 +175,21 @@ namespace ryanAps.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("DataLimite")
-                        .HasColumnType("datetime(6)");
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
-                    b.Property<bool>("Pago")
-                        .HasColumnType("tinyint(1)");
+                    b.Property<string>("InformacoesAdcionais")
+                        .HasColumnType("longtext");
 
-                    b.Property<double>("Valor")
-                        .HasColumnType("double");
+                    b.Property<string>("NomeDoCobrado")
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
                     b.ToTable("TipoPagamento");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("TipoPagamento");
                 });
 
             modelBuilder.Entity("ryanAps.Models.Transportadora", b =>
@@ -192,15 +220,30 @@ namespace ryanAps.Migrations
                     b.ToTable("Vendedor");
                 });
 
-            modelBuilder.Entity("ryanAps.Models.Item", b =>
+            modelBuilder.Entity("ryanAps.Models.PagamentoCartao", b =>
                 {
-                    b.HasOne("ryanAps.Models.NotaDeVenda", "NotaDeVenda")
-                        .WithMany("Itens")
-                        .HasForeignKey("NotaDeVendaID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasBaseType("ryanAps.Models.TipoPagamento");
 
-                    b.Navigation("NotaDeVenda");
+                    b.Property<string>("Bandeira")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("NumeroDoCartao")
+                        .HasColumnType("longtext");
+
+                    b.HasDiscriminator().HasValue("PagamentoCartao");
+                });
+
+            modelBuilder.Entity("ryanAps.Models.PagamentoComCheque", b =>
+                {
+                    b.HasBaseType("ryanAps.Models.TipoPagamento");
+
+                    b.Property<int?>("Banco")
+                        .HasColumnType("int");
+
+                    b.Property<string>("NumeroDoCheque")
+                        .HasColumnType("longtext");
+
+                    b.HasDiscriminator().HasValue("PagamentoComCheque");
                 });
 
             modelBuilder.Entity("ryanAps.Models.NotaDeVenda", b =>
@@ -211,9 +254,17 @@ namespace ryanAps.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ryanAps.Models.TipoPagamento", null)
+                    b.HasOne("ryanAps.Models.Item", "Item")
                         .WithMany("NotasDeVenda")
-                        .HasForeignKey("TipoPagamentoId");
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ryanAps.Models.TipoPagamento", "TipoPagamento")
+                        .WithMany("NotasDeVenda")
+                        .HasForeignKey("TipoPagamentoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("ryanAps.Models.Transportadora", "Transportadora")
                         .WithMany("NotasDeVenda")
@@ -227,9 +278,24 @@ namespace ryanAps.Migrations
 
                     b.Navigation("Cliente");
 
+                    b.Navigation("Item");
+
+                    b.Navigation("TipoPagamento");
+
                     b.Navigation("Transportadora");
 
                     b.Navigation("Vendedor");
+                });
+
+            modelBuilder.Entity("ryanAps.Models.Pagamento", b =>
+                {
+                    b.HasOne("ryanAps.Models.NotaDeVenda", "NotaDeVenda")
+                        .WithMany("Pagamentos")
+                        .HasForeignKey("NotaDeVendaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("NotaDeVenda");
                 });
 
             modelBuilder.Entity("ryanAps.Models.Produto", b =>
@@ -254,6 +320,8 @@ namespace ryanAps.Migrations
 
             modelBuilder.Entity("ryanAps.Models.Item", b =>
                 {
+                    b.Navigation("NotasDeVenda");
+
                     b.Navigation("Produtos");
                 });
 
@@ -264,7 +332,7 @@ namespace ryanAps.Migrations
 
             modelBuilder.Entity("ryanAps.Models.NotaDeVenda", b =>
                 {
-                    b.Navigation("Itens");
+                    b.Navigation("Pagamentos");
                 });
 
             modelBuilder.Entity("ryanAps.Models.TipoPagamento", b =>

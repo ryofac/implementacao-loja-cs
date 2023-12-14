@@ -22,8 +22,7 @@ namespace ryanAps.Controllers
         // GET: Item
         public async Task<IActionResult> Index()
         {
-            var myDbContext = _context.Item.Include(i => i.NotaDeVenda);
-            return View(await myDbContext.ToListAsync());
+            return View(await _context.Item.ToListAsync());
         }
 
         // GET: Item/Details/5
@@ -35,7 +34,6 @@ namespace ryanAps.Controllers
             }
 
             var item = await _context.Item
-                .Include(i => i.NotaDeVenda)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (item == null)
             {
@@ -48,7 +46,6 @@ namespace ryanAps.Controllers
         // GET: Item/Create
         public IActionResult Create()
         {
-            ViewData["NotaDeVendaID"] = new SelectList(_context.Set<NotaDeVenda>(), "Id", "Id");
             return View();
         }
 
@@ -57,7 +54,7 @@ namespace ryanAps.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Preco,Percentual,Quantidade,NotaDeVendaID")] Item item)
+        public async Task<IActionResult> Create([Bind("Id,Preco,Percentual,Quantidade")] Item item)
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +62,6 @@ namespace ryanAps.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["NotaDeVendaID"] = new SelectList(_context.Set<NotaDeVenda>(), "Id", "Id", item.NotaDeVendaID);
             return View(item);
         }
 
@@ -82,7 +78,6 @@ namespace ryanAps.Controllers
             {
                 return NotFound();
             }
-            ViewData["NotaDeVendaID"] = new SelectList(_context.Set<NotaDeVenda>(), "Id", "Id", item.NotaDeVendaID);
             return View(item);
         }
 
@@ -91,7 +86,7 @@ namespace ryanAps.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Preco,Percentual,Quantidade,NotaDeVendaID")] Item item)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Preco,Percentual,Quantidade")] Item item)
         {
             if (id != item.Id)
             {
@@ -118,7 +113,6 @@ namespace ryanAps.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["NotaDeVendaID"] = new SelectList(_context.Set<NotaDeVenda>(), "Id", "Id", item.NotaDeVendaID);
             return View(item);
         }
 
@@ -131,7 +125,6 @@ namespace ryanAps.Controllers
             }
 
             var item = await _context.Item
-                .Include(i => i.NotaDeVenda)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (item == null)
             {

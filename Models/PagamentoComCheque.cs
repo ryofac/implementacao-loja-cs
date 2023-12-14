@@ -1,3 +1,4 @@
+
 namespace ryanAps.Models
 {
     public class PagamentoComCheque : TipoPagamento

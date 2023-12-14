@@ -1,4 +1,4 @@
-@model ryanAps.Models.TipoPagamento
+@model ryanAps.Models.PagamentoComCheque
 
 @{
     ViewData["Title"] = "Create";
@@ -6,12 +6,22 @@
 
 <h1>Create</h1>
 
-<h4>TipoPagamento</h4>
+<h4>PagamentoComCheque</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="NumeroDoCheque" class="control-label"></label>
+                <input asp-for="NumeroDoCheque" class="form-control" />
+                <span asp-validation-for="NumeroDoCheque" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Banco" class="control-label"></label>
+                <input asp-for="Banco" class="form-control" />
+                <span asp-validation-for="Banco" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="NomeDoCobrado" class="control-label"></label>
                 <input asp-for="NomeDoCobrado" class="form-control" />

@@ -13,13 +13,10 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.DataLimite)
+                @Html.DisplayNameFor(model => model.NomeDoCobrado)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Valor)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Pago)
+                @Html.DisplayNameFor(model => model.InformacoesAdcionais)
             </th>
             <th></th>
         </tr>
@@ -28,13 +25,10 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.DataLimite)
+                @Html.DisplayFor(modelItem => item.NomeDoCobrado)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Valor)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Pago)
+                @Html.DisplayFor(modelItem => item.InformacoesAdcionais)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

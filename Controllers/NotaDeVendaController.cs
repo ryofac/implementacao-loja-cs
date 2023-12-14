@@ -22,7 +22,7 @@ namespace ryanAps.Controllers
         // GET: NotaDeVenda
         public async Task<IActionResult> Index()
         {
-            var myDbContext = _context.NotaDeVenda.Include(n => n.Cliente).Include(n => n.Transportadora).Include(n => n.Vendedor);
+            var myDbContext = _context.NotaDeVenda.Include(n => n.Cliente).Include(n => n.Item).Include(n => n.TipoPagamento).Include(n => n.Transportadora).Include(n => n.Vendedor);
             return View(await myDbContext.ToListAsync());
         }
 
@@ -36,6 +36,8 @@ namespace ryanAps.Controllers
 
             var notaDeVenda = await _context.NotaDeVenda
                 .Include(n => n.Cliente)
+                .Include(n => n.Item)
+                .Include(n => n.TipoPagamento)
                 .Include(n => n.Transportadora)
                 .Include(n => n.Vendedor)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -51,6 +53,8 @@ namespace ryanAps.Controllers
         public IActionResult Create()
         {
             ViewData["ClienteId"] = new SelectList(_context.Cliente, "Id", "Id");
+            ViewData["ItemId"] = new SelectList(_context.Item, "Id", "Id");
+            ViewData["TipoPagamentoId"] = new SelectList(_context.Set<TipoPagamento>(), "Id", "Id");
             ViewData["TransportadoraId"] = new SelectList(_context.Set<Transportadora>(), "Id", "Id");
             ViewData["VendedorId"] = new SelectList(_context.Set<Vendedor>(), "Id", "Id");
             return View();
@@ -61,7 +65,7 @@ namespace ryanAps.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Tipo,Data,ClienteId,VendedorId,TransportadoraId")] NotaDeVenda notaDeVenda)
+        public async Task<IActionResult> Create([Bind("Id,Tipo,Data,ItemId,ClienteId,VendedorId,TransportadoraId,TipoPagamentoId")] NotaDeVenda notaDeVenda)
         {
             if (ModelState.IsValid)
             {
@@ -70,6 +74,8 @@ namespace ryanAps.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["ClienteId"] = new SelectList(_context.Cliente, "Id", "Id", notaDeVenda.ClienteId);
+            ViewData["ItemId"] = new SelectList(_context.Item, "Id", "Id", notaDeVenda.ItemId);
+            ViewData["TipoPagamentoId"] = new SelectList(_context.Set<TipoPagamento>(), "Id", "Id", notaDeVenda.TipoPagamentoId);
             ViewData["TransportadoraId"] = new SelectList(_context.Set<Transportadora>(), "Id", "Id", notaDeVenda.TransportadoraId);
             ViewData["VendedorId"] = new SelectList(_context.Set<Vendedor>(), "Id", "Id", notaDeVenda.VendedorId);
             return View(notaDeVenda);
@@ -89,6 +95,8 @@ namespace ryanAps.Controllers
                 return NotFound();
             }
             ViewData["ClienteId"] = new SelectList(_context.Cliente, "Id", "Id", notaDeVenda.ClienteId);
+            ViewData["ItemId"] = new SelectList(_context.Item, "Id", "Id", notaDeVenda.ItemId);
+            ViewData["TipoPagamentoId"] = new SelectList(_context.Set<TipoPagamento>(), "Id", "Id", notaDeVenda.TipoPagamentoId);
             ViewData["TransportadoraId"] = new SelectList(_context.Set<Transportadora>(), "Id", "Id", notaDeVenda.TransportadoraId);
             ViewData["VendedorId"] = new SelectList(_context.Set<Vendedor>(), "Id", "Id", notaDeVenda.VendedorId);
             return View(notaDeVenda);
@@ -99,7 +107,7 @@ namespace ryanAps.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Tipo,Data,ClienteId,VendedorId,TransportadoraId")] NotaDeVenda notaDeVenda)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Tipo,Data,ItemId,ClienteId,VendedorId,TransportadoraId,TipoPagamentoId")] NotaDeVenda notaDeVenda)
         {
             if (id != notaDeVenda.Id)
             {
@@ -127,6 +135,8 @@ namespace ryanAps.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["ClienteId"] = new SelectList(_context.Cliente, "Id", "Id", notaDeVenda.ClienteId);
+            ViewData["ItemId"] = new SelectList(_context.Item, "Id", "Id", notaDeVenda.ItemId);
+            ViewData["TipoPagamentoId"] = new SelectList(_context.Set<TipoPagamento>(), "Id", "Id", notaDeVenda.TipoPagamentoId);
             ViewData["TransportadoraId"] = new SelectList(_context.Set<Transportadora>(), "Id", "Id", notaDeVenda.TransportadoraId);
             ViewData["VendedorId"] = new SelectList(_context.Set<Vendedor>(), "Id", "Id", notaDeVenda.VendedorId);
             return View(notaDeVenda);
@@ -142,6 +152,8 @@ namespace ryanAps.Controllers
 
             var notaDeVenda = await _context.NotaDeVenda
                 .Include(n => n.Cliente)
+                .Include(n => n.Item)
+                .Include(n => n.TipoPagamento)
                 .Include(n => n.Transportadora)
                 .Include(n => n.Vendedor)
                 .FirstOrDefaultAsync(m => m.Id == id);

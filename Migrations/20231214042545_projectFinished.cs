@@ -6,10 +6,13 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ryanAps.Migrations
 {
-    public partial class daCertoJesus : Migration
+    public partial class projectFinished : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AlterDatabase()
+                .Annotation("MySql:CharSet", "utf8mb4");
+
             migrationBuilder.CreateTable(
                 name: "Cliente",
                 columns: table => new
@@ -22,6 +25,22 @@ namespace ryanAps.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Cliente", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Item",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Preco = table.Column<double>(type: "double", nullable: false),
+                    Percentual = table.Column<int>(type: "int", nullable: false),
+                    Quantidade = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Item", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -48,9 +67,10 @@ namespace ryanAps.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    DataLimite = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Valor = table.Column<double>(type: "double", nullable: false),
-                    Pago = table.Column<bool>(type: "tinyint(1)", nullable: false)
+                    NomeDoCobrado = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    InformacoesAdcionais = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
@@ -89,71 +109,6 @@ namespace ryanAps.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "NotaDeVenda",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Tipo = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    Data = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    ClienteId = table.Column<int>(type: "int", nullable: false),
-                    VendedorId = table.Column<int>(type: "int", nullable: false),
-                    TransportadoraId = table.Column<int>(type: "int", nullable: false),
-                    TipoPagamentoId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_NotaDeVenda", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_NotaDeVenda_Cliente_ClienteId",
-                        column: x => x.ClienteId,
-                        principalTable: "Cliente",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_NotaDeVenda_TipoPagamento_TipoPagamentoId",
-                        column: x => x.TipoPagamentoId,
-                        principalTable: "TipoPagamento",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_NotaDeVenda_Transportadora_TransportadoraId",
-                        column: x => x.TransportadoraId,
-                        principalTable: "Transportadora",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_NotaDeVenda_Vendedor_VendedorId",
-                        column: x => x.VendedorId,
-                        principalTable: "Vendedor",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "Item",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Preco = table.Column<double>(type: "double", nullable: false),
-                    Percentual = table.Column<int>(type: "int", nullable: false),
-                    Quantidade = table.Column<int>(type: "int", nullable: false),
-                    NotaDeVendaID = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Item", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Item_NotaDeVenda_NotaDeVendaID",
-                        column: x => x.NotaDeVendaID,
-                        principalTable: "NotaDeVenda",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
                 name: "Produto",
                 columns: table => new
                 {
@@ -184,15 +139,87 @@ namespace ryanAps.Migrations
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Item_NotaDeVendaID",
-                table: "Item",
-                column: "NotaDeVendaID");
+            migrationBuilder.CreateTable(
+                name: "NotaDeVenda",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Tipo = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    Data = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    ItemId = table.Column<int>(type: "int", nullable: false),
+                    ClienteId = table.Column<int>(type: "int", nullable: false),
+                    VendedorId = table.Column<int>(type: "int", nullable: false),
+                    TransportadoraId = table.Column<int>(type: "int", nullable: true),
+                    TipoPagamentoId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_NotaDeVenda", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_NotaDeVenda_Cliente_ClienteId",
+                        column: x => x.ClienteId,
+                        principalTable: "Cliente",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_NotaDeVenda_Item_ItemId",
+                        column: x => x.ItemId,
+                        principalTable: "Item",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_NotaDeVenda_TipoPagamento_TipoPagamentoId",
+                        column: x => x.TipoPagamentoId,
+                        principalTable: "TipoPagamento",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_NotaDeVenda_Transportadora_TransportadoraId",
+                        column: x => x.TransportadoraId,
+                        principalTable: "Transportadora",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_NotaDeVenda_Vendedor_VendedorId",
+                        column: x => x.VendedorId,
+                        principalTable: "Vendedor",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Pagamento",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    DataLimite = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Valor = table.Column<double>(type: "double", nullable: false),
+                    Pago = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    NotaDeVendaId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Pagamento", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Pagamento_NotaDeVenda_NotaDeVendaId",
+                        column: x => x.NotaDeVendaId,
+                        principalTable: "NotaDeVenda",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
                 name: "IX_NotaDeVenda_ClienteId",
                 table: "NotaDeVenda",
                 column: "ClienteId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_NotaDeVenda_ItemId",
+                table: "NotaDeVenda",
+                column: "ItemId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_NotaDeVenda_TipoPagamentoId",
@@ -210,6 +237,11 @@ namespace ryanAps.Migrations
                 column: "VendedorId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Pagamento_NotaDeVendaId",
+                table: "Pagamento",
+                column: "NotaDeVendaId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Produto_ItemId",
                 table: "Produto",
                 column: "ItemId");
@@ -223,19 +255,22 @@ namespace ryanAps.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Pagamento");
+
+            migrationBuilder.DropTable(
                 name: "Produto");
-
-            migrationBuilder.DropTable(
-                name: "Item");
-
-            migrationBuilder.DropTable(
-                name: "Marca");
 
             migrationBuilder.DropTable(
                 name: "NotaDeVenda");
 
             migrationBuilder.DropTable(
+                name: "Marca");
+
+            migrationBuilder.DropTable(
                 name: "Cliente");
+
+            migrationBuilder.DropTable(
+                name: "Item");
 
             migrationBuilder.DropTable(
                 name: "TipoPagamento");

@@ -14,19 +14,14 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <label asp-for="DataLimite" class="control-label"></label>
-                <input asp-for="DataLimite" class="form-control" />
-                <span asp-validation-for="DataLimite" class="text-danger"></span>
+                <label asp-for="NomeDoCobrado" class="control-label"></label>
+                <input asp-for="NomeDoCobrado" class="form-control" />
+                <span asp-validation-for="NomeDoCobrado" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Valor" class="control-label"></label>
-                <input asp-for="Valor" class="form-control" />
-                <span asp-validation-for="Valor" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Pago" /> @Html.DisplayNameFor(model => model.Pago)
-                </label>
+                <label asp-for="InformacoesAdcionais" class="control-label"></label>
+                <input asp-for="InformacoesAdcionais" class="form-control" />
+                <span asp-validation-for="InformacoesAdcionais" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

@@ -19,6 +19,9 @@
                 @Html.DisplayNameFor(model => model.Data)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Item)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Cliente)
             </th>
             <th>
@@ -26,6 +29,9 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Transportadora)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TipoPagamento)
             </th>
             <th></th>
         </tr>
@@ -40,6 +46,9 @@
                 @Html.DisplayFor(modelItem => item.Data)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.Item.Id)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Cliente.Id)
             </td>
             <td>
@@ -47,6 +56,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Transportadora.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TipoPagamento.Id)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

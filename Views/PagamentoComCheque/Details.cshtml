@@ -1,4 +1,4 @@
-@model ryanAps.Models.TipoPagamento
+@model ryanAps.Models.PagamentoComCheque
 
 @{
     ViewData["Title"] = "Details";
@@ -7,9 +7,21 @@
 <h1>Details</h1>
 
 <div>
-    <h4>TipoPagamento</h4>
+    <h4>PagamentoComCheque</h4>
     <hr />
     <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.NumeroDoCheque)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NumeroDoCheque)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Banco)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Banco)
+        </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.NomeDoCobrado)
         </dt>
